@@ -1,4 +1,4 @@
-function createDest(m, n) {
+export function createDest(m, n) {
     let dest = Array.from({ length: m }, (_, i) => Array.from({ length: n }, (_, j) => i * n + j + 1));
     dest[m - 1][n - 1] = 0;
     return dest;
@@ -25,7 +25,7 @@ function parity(puzzle) {
     }
   }
   
-function shuffle(m, n) {
+export function shuffle(m, n) {
     let shuffled = Array.from({ length: m * n }, (_, i) => i);
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
