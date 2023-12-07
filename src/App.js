@@ -27,13 +27,16 @@ function Square({value, onClick}) {
   );
 }
 
-function Reference({onClick}) {
+function Reference({reference, onClick}) {
+  let status = null;
+  if(reference) {
+    status = JSON.stringify(reference)+ ", with steps: " + reference.length ;
+  }
   return (
     <div>
       <h1></h1>
-      <button onClick={onClick}>
-        Reference
-      </button>
+      <button onClick={onClick}>Reference</button>
+      <h4>{status}</h4>
     </div>
   );
 }
@@ -52,16 +55,28 @@ export default function Board() {
     setSquares(newSquares);
     setSteps(steps + 1);
   }
-  const [slides, setSlides] = useState(null);
-  function getSlides() {
-    const newSlides = astar(squares, dest);
-    setSlides(JSON.stringify(newSlides));
-  }
 
-  let referTo;
-  if(slides) {
-    referTo = "Steps: " + JSON.parse(slides).length;
-  }
+  // http request
+  const [reference, setReference] = useState(null);
+  const getReference = async (puzzle) => {
+    await fetch('http://127.0.0.1:5000/getReference', {
+      method: 'POST',
+      body: JSON.stringify({
+          puzzle: puzzle,
+      }),
+      headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setReference(data);
+      })
+      .catch((err) => {
+          console.log(err.message);
+      });
+    };
 
   let status = "Current Steps: " + steps;
   if(isOver(squares, dest)) {
@@ -79,11 +94,7 @@ export default function Board() {
           </div>
         )}
       </div>
-      <Reference onClick={getSlides}/>
-      <div>
-        <h1></h1>
-        <h2>{slides} {referTo}</h2>
-      </div>
+      <Reference reference={reference} onClick={() => getReference(squares)}/>
     </div>
   );
 }
