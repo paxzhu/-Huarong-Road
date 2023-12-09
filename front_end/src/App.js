@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { astar, shuffle, createDest } from "./AStar";
-import { Dropdown, Button, InputGroup } from 'react-bootstrap';
 
 function exchangeWithBlank(puzzle, i, j) {
   const m = puzzle.length, n = puzzle[0].length;
@@ -49,7 +48,7 @@ function Options({onOptionClick}) {
 }
 
 function Reset({onResetClick}) {
-  return <Button onClick={onResetClick}>Shuffle</Button>
+  return <button type="button" class="btn btn-primary" onClick={onResetClick}>Shuffle</button>
 }
 
 function Reference({reference, onClick}) {
@@ -59,7 +58,7 @@ function Reference({reference, onClick}) {
   }
   return (
     <div className="status">
-      <Button onClick={onClick}>Reference</Button>
+      <button type="button" class="btn btn-info" onClick={onClick}>Reference</button>
       <h4>{status}</h4>
     </div>
   );
