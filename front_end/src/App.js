@@ -37,13 +37,13 @@ function Options({onOptionClick}) {
       value={inputSize}
       onChange={(e) => setInputSize(e.target.value)}
       onKeyDown={(e) => {
-        const sizeIsValid = e.target.value > 2 && e.target.value < 10;
+        const sizeIsValid = e.target.value > 2 && e.target.value < 6;
         if(e.key === 'Enter' && sizeIsValid) {
           onOptionClick(e.target.value);
         }
       }}
       />
-      <label for="floatingInput"> 2 {'<'} Size {'<'} 10</label>
+      <label for="floatingInput"> 2 {'<'} Size {'<'} 6</label>
     </div>
   );
 }
