@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { astar, shuffle, createDest } from "./AStar";
-import { Dropdown, Button } from 'react-bootstrap';
+import { Dropdown, Button, InputGroup } from 'react-bootstrap';
 
 function exchangeWithBlank(puzzle, i, j) {
   const m = puzzle.length, n = puzzle[0].length;
@@ -25,18 +25,26 @@ function Square({value, onClick}) {
   );
 }
 
-function Options({selectedSize, onOptionClick}) {
+function Options({onOptionClick}) {
+  const [inputSize, setInputSize] = useState(3);
   return (
-    <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        {selectedSize}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <Dropdown.Item onClick={() => onOptionClick(3)}>3 X 3</Dropdown.Item>
-        <Dropdown.Item onClick={() => onOptionClick(4)}>4 X 4</Dropdown.Item>
-        <Dropdown.Item onClick={() => onOptionClick(5)}>5 X 5</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+    <div class="form-floating mb-3 ">
+      <input 
+      type="number" 
+      class="form-control" 
+      id="floatingInput" 
+      placeholder="size" 
+      value={inputSize}
+      onChange={(e) => setInputSize(e.target.value)}
+      onKeyDown={(e) => {
+        const sizeIsValid = e.target.value > 2 && e.target.value < 10;
+        if(e.key === 'Enter' && sizeIsValid) {
+          onOptionClick(e.target.value);
+        }
+      }}
+      />
+      <label for="floatingInput"> 2 {'<'} Size {'<'} 10</label>
+    </div>
   );
 }
 
@@ -59,7 +67,6 @@ function Reference({reference, onClick}) {
 
 export default function Board() {
   const [size, setSize] = useState(3);
-  const [selectedSize, setSelectedSize] = useState("3 X 3");
   const dest = createDest(size, size);
   const [squares, setSquares] = useState(dest);
   const [steps, setSteps] = useState(0);
@@ -75,7 +82,7 @@ export default function Board() {
     exchangeWithBlank(newSquares, i, j);
     setSquares(newSquares);
     setSteps(newSteps);
-    if(isOver(squares, dest)) {
+    if(isOver(newSquares, dest)) {
       newStatus = "Finished by steps: " + newSteps;
     }
     setStatus(newStatus);
@@ -86,7 +93,6 @@ export default function Board() {
     const dest = createDest(newSize, newSize);
     setStatus("Target As Fallows");
     setSquares(dest);
-    setSelectedSize(`${newSize} X ${newSize}`);
     setSize(newSize);
   }
 
@@ -119,17 +125,17 @@ export default function Board() {
     };
 
   return (
-    <div>
+    <div class="container justify-content-center ">
       <div className="status">{status}</div>
-      <div>
+      <div >
         {squares.map((line, i) => 
-          <div className="board-row" key={i}>
+          <div className="board-row " key={i}>
             {line.map((value, j) => 
               <Square value={value} onClick={() => handleClick(i, j)} key={j}/> )}
           </div>
         )}
       </div>
-      <Options selectedSize={selectedSize} onOptionClick={handleOptions}/>
+      <Options onOptionClick={handleOptions}/>
       <Reset onResetClick={handleResetClick}/>
       <Reference reference={reference} onClick={() => getReference(squares)}/>
     </div>
