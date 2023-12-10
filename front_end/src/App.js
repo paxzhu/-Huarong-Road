@@ -137,23 +137,6 @@ export default function Board() {
       <Options onOptionClick={handleOptions}/>
       <Reset onResetClick={handleResetClick}/>
       <Reference reference={reference} onClick={() => getReference(squares)}/>
-      <div class="dropdown">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Dropdown link
-        </a>
-
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-      </div>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
     </div>
   );
 }
