@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import "@popperjs/core/dist/umd/popper.min.js"
 
 import App from "./App";
+// import App from "./test2"
 
 const root = createRoot(document.getElementById("root"));
 root.render(

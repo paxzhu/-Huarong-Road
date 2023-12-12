@@ -56,7 +56,7 @@ body {
   padding: 0;
 }
 
-.square {
+/* .square {
   background: #fff;
   border: 1px solid #999;
   float: left;
@@ -69,6 +69,25 @@ body {
   padding: 0;
   text-align: center;
   width: 34px;
+} */
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 4vw; /* 使用vw单位，根据视口宽度进行调整 */
+  font-weight: bold;
+  line-height: 5vw; /* 根据字体大小进行调整 */
+  height: 5vw; /* 使用vw单位，根据视口宽度进行调整 */
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 5vw; /* 使用vw单位，根据视口宽度进行调整 */
+}
+
+.container-half {
+  width:30%;
 }
 
 .center-div {
@@ -81,7 +100,7 @@ body {
 .board-row:after {
   clear: both;
   content: '';
-  display: table;
+  display: table;  
 }
 
 .status {
@@ -95,152 +114,4 @@ body {
 
 .game-info {
   margin-left: 20px;
-}
-/* styles.css */
-
-/* 定义动画样式 */
-.slide-animation {
-  width: 100px;
-  height: 100px;
-  background-color: #3498db;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* 定义关键帧动画 */
-@keyframes slide {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100px);
-  }
-}
-
-/* 应用动画样式 */
-.slide-animation:hover {
-  animation: slide 0.3s ease-in-out;
-}
-
-
-
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-main {
-  width: 100%;
-  max-width: 1000px;
-  margin: auto;
-  padding: 1em;
-}
-
-h1 {
-  text-align: center;
-}
-
-
-/* add posts form */
-
-form {
-  border: 1px solid black;
-  padding: 1em;
-  border-radius: 5px;
-  width: 100%;
-  margin: auto;
-  max-width: 400px;
-}
-
-form h2 {
-  text-align: center;
-  margin-top: 0;
-}
-
-.input-container {
-  display: flex;   
-  margin-bottom: 1em;
-}
-
-label, input, textarea {
-  display: block;
-  border-radius: 5px;
-  width: 100%;
-  font-size: 16px;
-}
-
-label {
-  margin-right: 1em;
-  font-weight: bold;
-}
-
-textarea {
-  resize: vertical;
-  height: 150px;
-}
-
-.btn-submit {
-  font-size: 18px;
-  margin: auto;
-  display: block;
-  border-radius: 5px;
-  padding: 0.5em 1em;
-  cursor: pointer;
-  transition: all, 0.5s;
-}
-
-.btn-submit:hover, .btn-submit:focus {
-  transform: scale(1.1);
-   transition: all, 0.5s;
-}
-
-/* Posts */
-
-.posts-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1em;
-  margin-top: 2em;
-}
-
-.posts-container h2 {
-  text-align: center;
-  margin-top: 0;
-  grid-column: 1/-1;
-}
-
-.post-card {
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 0.5em;
-  position: relative;
-}
-
-.post-title {
-  margin-top: 0;
-}
-
-.post-body {
-  margin-bottom: 50px; 
-}
-
-.btn-delete {
-  position: absolute;
-  bottom: 10px;
-  left: 30%;
-  right: 30%;
-  font-size: 16px;
-  margin: auto;
-  display: block;
-  border-radius: 5px;
-  padding: 0.5em 1em;
-  cursor: pointer;
-  transition: all, 0.5s;
-}
-
-.btn-delete:hover, .btn-delete:focus {
-  transform: scale(1.1);
-   transition: all, 0.5s;
 }

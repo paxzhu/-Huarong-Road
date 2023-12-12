@@ -23,27 +23,45 @@ function Square({value, onClick}) {
     </button>
   );
 }
+function Square1({value, onSquareClick}) {
+  if(value == 0) {
+    value = null;
+  }
+  return (
+    <button class="col square" onClick={onSquareClick}>
+      {value}
+    </button>
+  );
+}
 
 function Options({onOptionClick}) {
   const [inputSize, setInputSize] = useState(3);
   return (
-    <div class="form-floating mb-3 ">
-      <input 
-      type="number" 
-      class="form-control" 
-      id="floatingInput" 
-      placeholder="size" 
-      value={inputSize}
-      onChange={(e) => setInputSize(e.target.value)}
-      onKeyDown={(e) => {
-        const sizeIsValid = e.target.value > 2 && e.target.value < 6;
-        if(e.key === 'Enter' && sizeIsValid) {
-          onOptionClick(e.target.value);
-        }
-      }}
-      />
-      <label for="floatingInput"> 2 {'<'} Size {'<'} 6</label>
-    </div>
+    <div>
+      <div class="col-md-6 status">
+        <label for="validationCustom03" class="form-label">Game Size</label>
+        <input 
+        type="number" 
+        class="form-control" 
+        id="validationCustom03" 
+        placeholder="Enter a number"
+        title="2 < size < 6"
+        required 
+        value={inputSize} 
+        onChange={(e) => setInputSize(e.target.value)}
+        onKeyDown={(e) => {
+          const sizeIsValid = e.target.value > 2 && e.target.value < 6;
+          if(e.key === 'Enter' && sizeIsValid) {
+            onOptionClick(e.target.value);
+          }
+        }}
+        />
+        <div class="invalid-feedback">
+          2 {'<'} Size {'<'} 6
+        </div>
+      </div>
+  </div>  
+  
   );
 }
 
@@ -104,6 +122,7 @@ export default function Board() {
   // http request
   const [reference, setReference] = useState(null);
   const getReference = async (puzzle) => {
+    console.log(puzzle)
     await fetch('http://127.0.0.1:5000/getReference', {
       method: 'POST',
       body: JSON.stringify({
@@ -124,7 +143,7 @@ export default function Board() {
     };
 
   return (
-    <div class="container justify-content-center ">
+    <div class="container">
       <div className="status">{status}</div>
       <div >
         {squares.map((line, i) => 
@@ -134,8 +153,16 @@ export default function Board() {
           </div>
         )}
       </div>
-      <Options onOptionClick={handleOptions}/>
-      <Reset onResetClick={handleResetClick}/>
+      {/* <div class="container-half text-center">
+        {squares.map((line, i) => 
+          <div class="row justify-content-md-center" key={i}>
+            {line.map((value, j) => 
+              <Square1 value={value} onSquareClick={() => handleClick(i, j)} />)}
+          </div>
+        )}
+      </div> */}
+      <Options onOptionClick={ handleOptions }/>
+      <Reset onResetClick={ handleResetClick }/>
       <Reference reference={reference} onClick={() => getReference(squares)}/>
     </div>
   );
