@@ -13,23 +13,13 @@ function exchangeWithBlank(puzzle, i, j) {
   }
 }
 
-function Square({value, onClick}) {
-  if(value == 0) {
-    value = null;
-  }
-  return (
-    <button className="square" onClick={onClick}>
-      {value}
-    </button>
-  );
-}
-function Square1({value, onSquareClick}) {
+function Square({value, onSquareClick}) {
   if(value == 0) {
     value = null;
   }
   return (
     <div  class="col square" >
-      <button class="custom-button" onClick={onSquareClick}>
+      <button class="puzzle-button" onClick={onSquareClick}>
       {value}
       </button>
     </div>
@@ -67,7 +57,7 @@ function Options({onOptionClick}) {
 }
 
 function Reset({onResetClick}) {
-  return <button type="button" class="btn btn-primary " onClick={onResetClick}>Shuffle</button>
+  return <button type="button" class="btn btn-primary me-2" onClick={onResetClick}>Shuffle</button>
 }
 
 function Reference({reference, onClick}) {
@@ -76,7 +66,7 @@ function Reference({reference, onClick}) {
     status = JSON.stringify(reference)+ ", with steps: " + reference.length ;
   }
   return (
-      <button type="button" class="btn btn-info" onClick={onClick}>Reference</button>
+      <button type="button" class="btn btn-info me-2" onClick={onClick}>Reference</button>
   );
 }
 
@@ -147,7 +137,7 @@ export default function Board() {
         {squares.map((line, i) => 
           <div class="box" key={i}>
             {line.map((value, j) => 
-              <Square1 value={value} onSquareClick={() => handleClick(i, j)} />)}
+              <Square value={value} onSquareClick={() => handleClick(i, j)} />)}
           </div>
         )}
       </div>
@@ -157,6 +147,7 @@ export default function Board() {
         </div>
         <div >
           <Reset onResetClick={handleResetClick} />
+          
           <Reference reference={reference} onClick={() => getReference(squares)} />
         </div>
       </div>
