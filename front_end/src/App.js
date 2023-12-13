@@ -76,10 +76,7 @@ function Reference({reference, onClick}) {
     status = JSON.stringify(reference)+ ", with steps: " + reference.length ;
   }
   return (
-    <div className="status">
       <button type="button" class="btn btn-info" onClick={onClick}>Reference</button>
-      <h4>{status}</h4>
-    </div>
   );
 }
 
@@ -146,7 +143,7 @@ export default function Board() {
   return (
     <div class="container">
       <div className="status text-center fs-1">{status}</div>
-      <div class="custom-container custom-border">
+      <div class="custom-container custom-border mb-2">
         {squares.map((line, i) => 
           <div class="box" key={i}>
             {line.map((value, j) => 
@@ -154,8 +151,8 @@ export default function Board() {
           </div>
         )}
       </div>
-      <div class="custom-container status custom-border d-flex justify-content-between align-items-center">
-        <div class="custom-border">
+      <div class="custom-container custom-border mb-2">
+        <div class="custom-border mb-2">
           <Options onOptionClick={handleOptions} />
         </div>
         <div >
