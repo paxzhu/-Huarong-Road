@@ -60,7 +60,6 @@ body {
   background: #fff;
   border: 1px solid black;
   float: left;
-  font-size: 4vw; /* 使用vw单位，根据视口宽度进行调整 */
   text-align: center;
 }
 
@@ -75,10 +74,6 @@ body {
   padding-top: 100%; /* 1:1 高宽比 */
 }
 
-.box {
-  display: flex;
-}
-
 .square > * {
   position: absolute;
   top: 0;
@@ -86,6 +81,10 @@ body {
   width: 100%;
   height: 100%;
   background-color: white; /* 背景色，可根据需求更改 */
+}
+
+.box {
+  display: flex;
 }
 
 .custom-border {
@@ -101,7 +100,7 @@ body {
   margin: auto;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 776px) {
   .custom-container {
     width: 100%; /* 当屏幕宽度小于 768px 时，宽度为 100% */
   }

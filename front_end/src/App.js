@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { astar, shuffle, createDest } from "./AStar";
 
 function exchangeWithBlank(puzzle, i, j) {
@@ -13,18 +13,18 @@ function exchangeWithBlank(puzzle, i, j) {
   }
 }
 
-function Square({value, onSquareClick}) {
-  if(value == 0) {
-    value = null;
-  }
-  return (
-    <div  class="col square" >
-      <button class="puzzle-button" onClick={onSquareClick}>
-      {value}
-      </button>
-    </div>
-  );
-}
+// function Square({value, onSquareClick}) {
+//   if(value == 0) {
+//     value = null;
+//   }
+  
+
+//   return (
+//     <button class="" onClick={onSquareClick}>
+//       {value}
+//     </button>
+//   );
+// }
 
 function Options({onOptionClick}) {
   const [inputSize, setInputSize] = useState(3);
@@ -51,8 +51,6 @@ function Options({onOptionClick}) {
               <button type="submit" class="btn btn-outline-primary">Submit</button>
           </div>
         </form>
-      
-  
   );
 }
 
@@ -94,7 +92,7 @@ export default function Board() {
   }
 
   function handleOptions(newSize) {
-    console.log(newSize);
+    // console.log(newSize);
     const dest = createDest(newSize, newSize);
     setStatus("Target As Fallows");
     setSquares(dest);
@@ -130,24 +128,64 @@ export default function Board() {
       });
     };
 
+    const PuzzleMain = ({squares, handleClick}) => {
+      const mainRef = useRef(null);
+      const [mainWidth, setMainWidth] = useState(0);
+    
+      useEffect(() => {
+        if (mainRef.current) {
+          setMainWidth(mainRef.current.clientWidth); // 获取父元素的宽度
+        }
+      }, []);
+      console.log(mainWidth);
+      return (
+        <div className="custom-container custom-border mb-2" id="puzzle-main" ref={mainRef}>
+          {squares.map((line, i) =>
+            <div class="box" key={i}>
+              {line.map((value, j) =>
+                <div class="col square">
+                  <Square value={value} fontSize={(mainWidth/squares.length)*0.5} onSquareClick={() => handleClick(i, j)} />
+                </div>
+                )}
+            </div>
+          )}
+        </div>
+      );
+    };
+  
+  const Square = ({value, fontSize, onSquareClick}) => {
+      if(value == 0) {
+          value = null;
+        }
+      
+      return (
+      <button className="puzzle-button" style={{fontSize: fontSize}} onClick={onSquareClick}>
+          {value}
+      </button>
+      );
+  }; 
+
   return (
     <div class="container">
-      <div className="status text-center fs-1">{status}</div>
-      <div class="custom-container custom-border mb-2">
+      <div className="status text-center fs-1" id="puzzle-status">{status}</div>
+      {/* <div class="custom-container custom-border mb-2" id="puzzle-main">
         {squares.map((line, i) => 
           <div class="box" key={i}>
             {line.map((value, j) => 
-              <Square value={value} onSquareClick={() => handleClick(i, j)} />)}
+              <div class="col square">
+                <Square value={value} onSquareClick={() => handleClick(i, j)} />
+              </div>
+              )}
           </div>
         )}
-      </div>
-      <div class="custom-container custom-border mb-2">
+      </div> */}
+      <PuzzleMain squares={squares} handleClick={handleClick}/>
+      <div class="custom-container custom-border mb-2" id="puzzle-menu">
         <div class="custom-border mb-2">
           <Options onOptionClick={handleOptions} />
         </div>
         <div >
           <Reset onResetClick={handleResetClick} />
-          
           <Reference reference={reference} onClick={() => getReference(squares)} />
         </div>
       </div>
