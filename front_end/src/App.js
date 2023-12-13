@@ -28,45 +28,46 @@ function Square1({value, onSquareClick}) {
     value = null;
   }
   return (
-    <button class="col square" onClick={onSquareClick}>
+    <div  class="col square" >
+      <button class="custom-button" onClick={onSquareClick}>
       {value}
-    </button>
+      </button>
+    </div>
   );
 }
 
 function Options({onOptionClick}) {
   const [inputSize, setInputSize] = useState(3);
   return (
-    <div>
-      <div class="col-md-6 status">
-        <label for="validationCustom03" class="form-label">Game Size</label>
-        <input 
-        type="number" 
-        class="form-control" 
-        id="validationCustom03" 
-        placeholder="Enter a number"
-        title="2 < size < 6"
-        required 
-        value={inputSize} 
-        onChange={(e) => setInputSize(e.target.value)}
-        onKeyDown={(e) => {
-          const sizeIsValid = e.target.value > 2 && e.target.value < 6;
-          if(e.key === 'Enter' && sizeIsValid) {
-            onOptionClick(e.target.value);
-          }
-        }}
-        />
-        <div class="invalid-feedback">
-          2 {'<'} Size {'<'} 6
-        </div>
-      </div>
-  </div>  
+    
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          onOptionClick(inputSize);
+        }}>
+          <label for="validationCustom03" class="form-label">Game Size</label>
+          <div class="input-group">
+              <input 
+                  type="number" 
+                  class="form-control" 
+                  id="validationCustom03" 
+                  placeholder="Enter a number"
+                  title="3 <= Size <=5"
+                  min="3"
+                  max="5"
+                  required 
+                  value={inputSize} 
+                  onChange={(e) => setInputSize(e.target.value)}
+              />
+              <button type="submit" class="btn btn-outline-primary">Submit</button>
+          </div>
+        </form>
+      
   
   );
 }
 
 function Reset({onResetClick}) {
-  return <button type="button" class="btn btn-primary" onClick={onResetClick}>Shuffle</button>
+  return <button type="button" class="btn btn-primary " onClick={onResetClick}>Shuffle</button>
 }
 
 function Reference({reference, onClick}) {
@@ -144,26 +145,37 @@ export default function Board() {
 
   return (
     <div class="container">
-      <div className="status">{status}</div>
-      <div >
+      <div className="status text-center fs-1">{status}</div>
+      {/* <div style={{margin: "0 auto"}}>
         {squares.map((line, i) => 
-          <div className="board-row " key={i}>
+          <div className="board-row " style={{display: "flex"}} key={i}>
             {line.map((value, j) => 
               <Square value={value} onClick={() => handleClick(i, j)} key={j}/> )}
           </div>
         )}
-      </div>
-      {/* <div class="container-half text-center">
+      </div> */}
+      <div class="container-half custom-border">
         {squares.map((line, i) => 
-          <div class="row justify-content-md-center" key={i}>
+          <div class="box" key={i}>
             {line.map((value, j) => 
               <Square1 value={value} onSquareClick={() => handleClick(i, j)} />)}
           </div>
         )}
-      </div> */}
-      <Options onOptionClick={ handleOptions }/>
-      <Reset onResetClick={ handleResetClick }/>
-      <Reference reference={reference} onClick={() => getReference(squares)}/>
+      </div>
+      <div >
+      <div class="container-half status custom-border d-flex justify-content-between align-items-center">
+        <div class="custom-border">
+        <Options onOptionClick={handleOptions} />
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="ml-auto">
+                <Reset onResetClick={handleResetClick} />
+                <Reference reference={reference} onClick={() => getReference(squares)} />
+            </div>
+        </div>
+    </div>
+      </div>
+      
     </div>
   );
 }

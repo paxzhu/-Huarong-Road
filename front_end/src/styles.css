@@ -56,38 +56,49 @@ body {
   padding: 0;
 }
 
-/* .square {
+.custom-button {
   background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-} */
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
+  border: 1px solid black;
   float: left;
   font-size: 4vw; /* 使用vw单位，根据视口宽度进行调整 */
-  font-weight: bold;
-  line-height: 5vw; /* 根据字体大小进行调整 */
-  height: 5vw; /* 使用vw单位，根据视口宽度进行调整 */
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
   text-align: center;
-  width: 5vw; /* 使用vw单位，根据视口宽度进行调整 */
 }
+
+.square {
+  position: relative;
+  overflow: hidden;
+}
+
+.square::before {
+  content: "";
+  display: block;
+  padding-top: 100%; /* 1:1 高宽比 */
+}
+
+.box {
+  display: flex;
+}
+
+.square > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white; /* 背景色，可根据需求更改 */
+}
+
+.custom-border {
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  /* 其他样式，根据需要修改 */
+}
+
 
 .container-half {
   width:30%;
+  margin: auto;
 }
 
 .center-div {
@@ -104,8 +115,9 @@ body {
 }
 
 .status {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  /* margin-top: 10px;
+  margin-bottom: 10px; */
+  margin: 10px auto 10px;
 }
 .game {
   display: flex;
