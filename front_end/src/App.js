@@ -73,7 +73,7 @@ export default function Board() {
   const dest = createDest(size, size);
   const [squares, setSquares] = useState(dest);
   const [steps, setSteps] = useState(0);
-  const [status, setStatus] = useState("Target As Fallows");
+  const [status, setStatus] = useState("Target As Follows");
   function handleClick(i, j) {
     if(isOver(squares, dest)) {
       return ;
@@ -127,32 +127,17 @@ export default function Board() {
           console.log(err.message);
       });
     };
+  // responsive width of puzzle-main
+  const mainRef = useRef(null);
+  const [mainWidth, setMainWidth] = useState(0);
+  useEffect(() => {
+    if (mainRef.current) {
+      setMainWidth(mainRef.current.clientWidth); // 获取父元素的宽度
+    }
+  }, []);
+  // console.log(mainWidth);
+  const fontSize = (mainWidth/squares.length)*0.5;
 
-    const PuzzleMain = ({squares, handleClick}) => {
-      const mainRef = useRef(null);
-      const [mainWidth, setMainWidth] = useState(0);
-    
-      useEffect(() => {
-        if (mainRef.current) {
-          setMainWidth(mainRef.current.clientWidth); // 获取父元素的宽度
-        }
-      }, []);
-      console.log(mainWidth);
-      return (
-        <div className="custom-container custom-border mb-2" id="puzzle-main" ref={mainRef}>
-          {squares.map((line, i) =>
-            <div class="box" key={i}>
-              {line.map((value, j) =>
-                <div class="col square">
-                  <Square value={value} fontSize={(mainWidth/squares.length)*0.5} onSquareClick={() => handleClick(i, j)} />
-                </div>
-                )}
-            </div>
-          )}
-        </div>
-      );
-    };
-  
   const Square = ({value, fontSize, onSquareClick}) => {
       if(value == 0) {
           value = null;
@@ -168,18 +153,17 @@ export default function Board() {
   return (
     <div class="container">
       <div className="status text-center fs-1" id="puzzle-status">{status}</div>
-      {/* <div class="custom-container custom-border mb-2" id="puzzle-main">
-        {squares.map((line, i) => 
+      <div className="custom-container custom-border mb-2" id="puzzle-main" ref={mainRef}>
+        {squares.map((line, i) =>
           <div class="box" key={i}>
-            {line.map((value, j) => 
+            {line.map((value, j) =>
               <div class="col square">
-                <Square value={value} onSquareClick={() => handleClick(i, j)} />
+                <Square value={value} fontSize={fontSize} onSquareClick={() => handleClick(i, j)} />
               </div>
               )}
           </div>
         )}
-      </div> */}
-      <PuzzleMain squares={squares} handleClick={handleClick}/>
+      </div>
       <div class="custom-container custom-border mb-2" id="puzzle-menu">
         <div class="custom-border mb-2">
           <Options onOptionClick={handleOptions} />
