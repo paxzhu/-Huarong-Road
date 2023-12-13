@@ -146,15 +146,7 @@ export default function Board() {
   return (
     <div class="container">
       <div className="status text-center fs-1">{status}</div>
-      {/* <div style={{margin: "0 auto"}}>
-        {squares.map((line, i) => 
-          <div className="board-row " style={{display: "flex"}} key={i}>
-            {line.map((value, j) => 
-              <Square value={value} onClick={() => handleClick(i, j)} key={j}/> )}
-          </div>
-        )}
-      </div> */}
-      <div class="container-half custom-border">
+      <div class="custom-container custom-border">
         {squares.map((line, i) => 
           <div class="box" key={i}>
             {line.map((value, j) => 
@@ -162,20 +154,15 @@ export default function Board() {
           </div>
         )}
       </div>
-      <div >
-      <div class="container-half status custom-border d-flex justify-content-between align-items-center">
+      <div class="custom-container status custom-border d-flex justify-content-between align-items-center">
         <div class="custom-border">
-        <Options onOptionClick={handleOptions} />
+          <Options onOptionClick={handleOptions} />
         </div>
-        <div class="d-flex align-items-center">
-            <div class="ml-auto">
-                <Reset onResetClick={handleResetClick} />
-                <Reference reference={reference} onClick={() => getReference(squares)} />
-            </div>
+        <div >
+          <Reset onResetClick={handleResetClick} />
+          <Reference reference={reference} onClick={() => getReference(squares)} />
         </div>
-    </div>
       </div>
-      
     </div>
   );
 }

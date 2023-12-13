@@ -95,10 +95,16 @@ body {
   /* 其他样式，根据需要修改 */
 }
 
-
-.container-half {
-  width:30%;
+.custom-container {
+  /* 其他样式 */
+  width: 50%; /* 默认宽度 */
   margin: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .custom-container {
+    width: 100%; /* 当屏幕宽度小于 768px 时，宽度为 100% */
+  }
 }
 
 .center-div {
