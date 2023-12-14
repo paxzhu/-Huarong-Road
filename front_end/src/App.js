@@ -13,19 +13,6 @@ function exchangeWithBlank(puzzle, i, j) {
   }
 }
 
-// function Square({value, onSquareClick}) {
-//   if(value == 0) {
-//     value = null;
-//   }
-  
-
-//   return (
-//     <button class="" onClick={onSquareClick}>
-//       {value}
-//     </button>
-//   );
-// }
-
 function Options({onOptionClick}) {
   const [inputSize, setInputSize] = useState(3);
   return (
@@ -34,12 +21,11 @@ function Options({onOptionClick}) {
           e.preventDefault();
           onOptionClick(inputSize);
         }}>
-          <label for="validationCustom03" class="form-label">Game Size</label>
-          <div class="input-group">
+          <label className="form-label">Game Size</label>
+          <div className="input-group">
               <input 
                   type="number" 
-                  class="form-control" 
-                  id="validationCustom03" 
+                  className="form-control" 
                   placeholder="Enter a number"
                   title="3 <= Size <=5"
                   min="3"
@@ -48,14 +34,14 @@ function Options({onOptionClick}) {
                   value={inputSize} 
                   onChange={(e) => setInputSize(e.target.value)}
               />
-              <button type="submit" class="btn btn-outline-primary">Submit</button>
+              <button type="submit" className="btn btn-outline-primary">Submit</button>
           </div>
         </form>
   );
 }
 
 function Reset({onResetClick}) {
-  return <button type="button" class="btn btn-primary me-2" onClick={onResetClick}>Shuffle</button>
+  return <button type="button" className="btn btn-primary me-2" onClick={onResetClick}>Shuffle</button>
 }
 
 function Reference({reference, onClick}) {
@@ -64,7 +50,7 @@ function Reference({reference, onClick}) {
     status = JSON.stringify(reference)+ ", with steps: " + reference.length ;
   }
   return (
-      <button type="button" class="btn btn-info me-2" onClick={onClick}>Reference</button>
+      <button type="button" className="btn btn-info me-2" onClick={onClick}>Reference</button>
   );
 }
 
@@ -94,7 +80,7 @@ export default function Board() {
   function handleOptions(newSize) {
     // console.log(newSize);
     const dest = createDest(newSize, newSize);
-    setStatus("Target As Fallows");
+    setStatus("Target As Follows");
     setSquares(dest);
     setSize(newSize);
   }
@@ -134,9 +120,13 @@ export default function Board() {
     if (mainRef.current) {
       setMainWidth(mainRef.current.clientWidth); // 获取父元素的宽度
     }
+    window.addEventListener("resize", () => {
+      setMainWidth(mainRef.current.clientWidth);
+    });
   }, []);
-  // console.log(mainWidth);
-  const fontSize = (mainWidth/squares.length)*0.5;
+  console.log(mainWidth);
+  
+  let fontSize = (mainWidth/squares.length)*0.5;
 
   const Square = ({value, fontSize, onSquareClick}) => {
       if(value == 0) {
@@ -151,21 +141,21 @@ export default function Board() {
   }; 
 
   return (
-    <div class="container">
+    <div className="container">
       <div className="status text-center fs-1" id="puzzle-status">{status}</div>
       <div className="custom-container custom-border mb-2" id="puzzle-main" ref={mainRef}>
         {squares.map((line, i) =>
-          <div class="box" key={i}>
+          <div className="box" key={i}>
             {line.map((value, j) =>
-              <div class="col square">
+              <div className="col square">
                 <Square value={value} fontSize={fontSize} onSquareClick={() => handleClick(i, j)} />
               </div>
               )}
           </div>
         )}
       </div>
-      <div class="custom-container custom-border mb-2" id="puzzle-menu">
-        <div class="custom-border mb-2">
+      <div className="custom-container custom-border mb-2" id="puzzle-menu">
+        <div className="custom-border mb-2">
           <Options onOptionClick={handleOptions} />
         </div>
         <div >
