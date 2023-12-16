@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { astar, shuffle, createDest } from "./AStar";
+import { createDest, getPuzzle } from "./AboutPuzzle";
 
 function exchangeWithBlank(puzzle, i, j) {
   const m = puzzle.length, n = puzzle[0].length;
@@ -21,15 +21,16 @@ function Options({onOptionClick}) {
           e.preventDefault();
           onOptionClick(inputSize);
         }}>
-          <label className="form-label">Game Size</label>
+          <label htmlFor="gameSize" className="form-label">Game Size</label>
           <div className="input-group">
               <input 
                   type="number" 
+                  id="gameSize"
                   className="form-control" 
                   placeholder="Enter a number"
-                  title="3 <= Size <=5"
+                  title="3 <= Size <=6"
                   min="3"
-                  max="5"
+                  max="6"
                   required 
                   value={inputSize} 
                   onChange={(e) => setInputSize(e.target.value)}
@@ -86,10 +87,11 @@ export default function Board() {
   }
 
   function handleResetClick() {
-    const shuffled = shuffle(size, size);
+    // const puzzle = [[2, 7, 1],[6, 0, 4], [3, 5, 8]];
+    const puzzle = getPuzzle(size, size);
     setSteps(0);
     setStatus("Current Steps: 0");
-    setSquares(shuffled);
+    setSquares(puzzle);
   }
   // http request
   const [reference, setReference] = useState(null);
@@ -124,8 +126,8 @@ export default function Board() {
       setMainWidth(mainRef.current.clientWidth);
     });
   }, []);
-  console.log(mainWidth);
-  
+  // console.log(mainWidth);
+
   let fontSize = (mainWidth/squares.length)*0.5;
 
   const Square = ({value, fontSize, onSquareClick}) => {
@@ -147,7 +149,7 @@ export default function Board() {
         {squares.map((line, i) =>
           <div className="box" key={i}>
             {line.map((value, j) =>
-              <div className="col square">
+              <div className="col square" key={i*size+j}>
                 <Square value={value} fontSize={fontSize} onSquareClick={() => handleClick(i, j)} />
               </div>
               )}
