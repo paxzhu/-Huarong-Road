@@ -177,7 +177,7 @@ export default function Board() {
         </div>
         <div>
           <Reset onResetClick={handleResetClick} />
-          <Answer 
+          {/* <Answer 
             onClick={() => {
               if(size < 4) {
                 getAnswer(squares);
@@ -186,8 +186,8 @@ export default function Board() {
                 setAnswer("The current function does not support the solution of puzzle size 4~10.")
               }
               setSignalSwitch("answer");
-            }} />
-          <button type="button" className="btn btn-success me-2" onClick={() => setSignalSwitch("introduction")}>Game Introduction</button>
+            }} /> */}
+          <button type="button" className="btn btn-info me-2" onClick={() => setSignalSwitch("introduction")}>Game Introduction</button>
           <button type="button" className="btn btn-secondary" onClick={() => setSignalSwitch("email")}>Feedback</button>
           <TextBox signalSwitch={signalSwitch}/>
           
