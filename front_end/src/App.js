@@ -143,15 +143,16 @@ export default function Board() {
 
   const signals = {
     answer: answer,
-    introduction: `Move tiles in grid to order them from 1 to ${size*size-1}. To move a tile you can click on it.`,
-    email: "Please send your issues to paxzhu98@163.com"
+    introduce: `Move tiles in grid to order them from 1 to ${size*size-1}. To move a tile you can click on it.`,
+    feedback: "Please send your issues to paxzhu98@163.com"
   };
 
   const TextBox = ({signalSwitch}) => {
     if(signalSwitch) {
       return (
         <div className="custom-border mt-2">
-          {JSON.stringify(signals[signalSwitch])}
+          {/* {JSON.stringify(signals[signalSwitch])} */}
+          {signals[signalSwitch]}
         </div>
       );
     }
@@ -187,8 +188,8 @@ export default function Board() {
               }
               setSignalSwitch("answer");
             }} /> */}
-          <button type="button" className="btn btn-info me-2" onClick={() => setSignalSwitch("introduction")}>Introduction</button>
-          <button type="button" className="btn btn-secondary" onClick={() => setSignalSwitch("email")}>Feedback</button>
+          <button type="button" className="btn btn-info me-2" onClick={() => setSignalSwitch("introduce")}>Introduce</button>
+          <button type="button" className="btn btn-secondary" onClick={() => setSignalSwitch("feedback")}>Feedback</button>
           <TextBox signalSwitch={signalSwitch}/>
           
         </div>
