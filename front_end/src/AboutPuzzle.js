@@ -43,7 +43,7 @@ export function getPuzzle(m, n) {
     }
     puzzle = Array.from({ length: m }, (_, i) => Array.from({ length: n }, (_, j) => puzzle[i*n+j]));
     if(!isSolvable(puzzle)) {
-        console.log(`Not solvable: ${puzzle}`);
+        // console.log(`Not solvable: ${puzzle}`);
         if(puzzle[0][0] && puzzle[0][1]) {
             [puzzle[0][0], puzzle[0][1]] = [puzzle[0][1], puzzle[0][0]];
         }

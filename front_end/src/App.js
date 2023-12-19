@@ -13,31 +13,42 @@ function exchangeWithBlank(puzzle, i, j) {
   }
 }
 
+function Square ({value, fontSize, onSquareClick}) {
+  if(value == 0) {
+      value = null;
+    }
+  
+  return (
+  <button className="puzzle-button" style={{fontSize: fontSize}} onClick={onSquareClick}>
+      {value}
+  </button>
+  );
+}
+
 function Options({onOptionClick}) {
   const [inputSize, setInputSize] = useState(3);
   return (
-    
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          onOptionClick(inputSize);
-        }}>
-          <label htmlFor="gameSize" className="form-label">Game Size</label>
-          <div className="input-group">
-              <input 
-                  type="number" 
-                  id="gameSize"
-                  className="form-control" 
-                  placeholder="Enter a number"
-                  title="3 <= Size <=6"
-                  min="3"
-                  max="6"
-                  required 
-                  value={inputSize} 
-                  onChange={(e) => setInputSize(e.target.value)}
-              />
-              <button type="submit" className="btn btn-outline-primary">Submit</button>
-          </div>
-        </form>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      onOptionClick(inputSize);
+    }}>
+      <label htmlFor="gameSize" className="form-label">Game Size</label>
+      <div className="input-group">
+        <input 
+          type="number" 
+          id="gameSize"
+          className="form-control" 
+          placeholder="Enter a number"
+          title="2 <= Size <= 10"
+          min="2"
+          max="10"
+          required 
+          value={inputSize} 
+          onChange={(e) => setInputSize(e.target.value)}
+        />
+        <button type="submit" className="btn btn-outline-primary">Submit</button>
+      </div>
+    </form>
   );
 }
 
@@ -45,13 +56,9 @@ function Reset({onResetClick}) {
   return <button type="button" className="btn btn-primary me-2" onClick={onResetClick}>Shuffle</button>
 }
 
-function Reference({reference, onClick}) {
-  let status = null;
-  if(reference) {
-    status = JSON.stringify(reference)+ ", with steps: " + reference.length ;
-  }
+function Answer({onClick}) {
   return (
-      <button type="button" className="btn btn-info me-2" onClick={onClick}>Reference</button>
+      <button type="button" className="btn btn-info me-2" onClick={onClick}>Answer</button>
   );
 }
 
@@ -61,6 +68,7 @@ export default function Board() {
   const [squares, setSquares] = useState(dest);
   const [steps, setSteps] = useState(0);
   const [status, setStatus] = useState("Target As Follows");
+  const [signalSwitch, setSignalSwitch] = useState(null);
   function handleClick(i, j) {
     if(isOver(squares, dest)) {
       return ;
@@ -84,20 +92,21 @@ export default function Board() {
     setStatus("Target As Follows");
     setSquares(dest);
     setSize(newSize);
+    setSignalSwitch(null);
   }
 
   function handleResetClick() {
-    // const puzzle = [[2, 7, 1],[6, 0, 4], [3, 5, 8]];
     const puzzle = getPuzzle(size, size);
     setSteps(0);
     setStatus("Current Steps: 0");
     setSquares(puzzle);
+    setSignalSwitch(null);
   }
   // http request
-  const [reference, setReference] = useState(null);
-  const getReference = async (puzzle) => {
+  const [answer, setAnswer] = useState("The current function does not support the solution of puzzle size 4~10.");
+  const getAnswer = async (puzzle) => {
     console.log(puzzle)
-    await fetch('http://127.0.0.1:5000/getReference', {
+    await fetch('http://127.0.0.1:5000/getAnswer', {
       method: 'POST',
       body: JSON.stringify({
           puzzle: puzzle,
@@ -108,8 +117,11 @@ export default function Board() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setReference(data);
+        console.log(data.length);
+        if(data.length == 0) {
+          data = "Click Shuffle to continue game.";
+        }
+        setAnswer(data);
       })
       .catch((err) => {
           console.log(err.message);
@@ -127,20 +139,23 @@ export default function Board() {
     });
   }, []);
   // console.log(mainWidth);
-
   let fontSize = (mainWidth/squares.length)*0.5;
 
-  const Square = ({value, fontSize, onSquareClick}) => {
-      if(value == 0) {
-          value = null;
-        }
-      
+  const signals = {
+    answer: answer,
+    introduction: `Move tiles in grid to order them from 1 to ${size*size-1}. To move a tile you can click on it.`,
+    email: "Please send your issues to paxzhu98@163.com"
+  };
+
+  const TextBox = ({signalSwitch}) => {
+    if(signalSwitch) {
       return (
-      <button className="puzzle-button" style={{fontSize: fontSize}} onClick={onSquareClick}>
-          {value}
-      </button>
+        <div className="custom-border mt-2">
+          {JSON.stringify(signals[signalSwitch])}
+        </div>
       );
-  }; 
+    }
+  };
 
   return (
     <div className="container">
@@ -160,9 +175,22 @@ export default function Board() {
         <div className="custom-border mb-2">
           <Options onOptionClick={handleOptions} />
         </div>
-        <div >
+        <div>
           <Reset onResetClick={handleResetClick} />
-          <Reference reference={reference} onClick={() => getReference(squares)} />
+          <Answer 
+            onClick={() => {
+              if(size < 4) {
+                getAnswer(squares);
+              }
+              else {
+                setAnswer("The current function does not support the solution of puzzle size 4~10.")
+              }
+              setSignalSwitch("answer");
+            }} />
+          <button type="button" className="btn btn-success me-2" onClick={() => setSignalSwitch("introduction")}>Game Introduction</button>
+          <button type="button" className="btn btn-secondary" onClick={() => setSignalSwitch("email")}>Feedback</button>
+          <TextBox signalSwitch={signalSwitch}/>
+          
         </div>
       </div>
     </div>
