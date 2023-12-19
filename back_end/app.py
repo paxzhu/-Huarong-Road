@@ -1,32 +1,29 @@
 from flask import Flask, request, jsonify
-from puzzle_solution import astar, create_dest, shuffle
+from puzzle_solution import astar, get_target, get_puzzle
 from zpj_astar import astar_solve
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/getShuffled": {"origins": "http://localhost:3000"}, r"/getReference": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/getShuffled": {"origins": "http://localhost:3000"}, r"/getAnswer": {"origins": "http://localhost:3000"}})
 
-@app.route("/getDest")
+@app.route("/getTarget")
 def getPuzzle():
-    dest = create_dest(3, 3)
+    dest = get_target(3, 3)
     return jsonify(dest)
 
-@app.route("/getShuffled")
+@app.route("/getPuzzle")
 def getShuffled():
-    shuffled = shuffle(3, 3)
+    shuffled = get_puzzle(3, 3)
     return jsonify(shuffled)
 
-@app.route('/getReference', methods=['GET', 'POST'])
-def reference():
+@app.route('/getAnswer', methods=['GET', 'POST'])
+def answer():
     puzzle = request.get_json().get("puzzle")
-    dest = create_dest(len(puzzle), len(puzzle[0]))
     print(puzzle)
-    print()
-    print(dest)
-    print("going to...")
-    # clicks = astar(puzzle, dest)[1]
-    clicks = [3, 1, 2]
+    dest = get_target(len(puzzle), len(puzzle[0]))
+    clicks = astar(puzzle, dest)[1]
     return jsonify(clicks)
+        
 
 if __name__ == '__main__':
     app.run(debug=True)

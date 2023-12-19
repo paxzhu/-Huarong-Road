@@ -1,16 +1,46 @@
-from random import randrange, randint
 import numpy as np
 import heapq
 
-def create_dest(m, n):
+def count_inversions(puzzle):
+    flat = sum(puzzle, [])
+    cnt = 0
+    for i in range(len(flat)-1):
+        for j in range(i+1, len(flat)):
+            if flat[j] and (flat[i] == 0 or flat[i] > flat[j]):
+                cnt += 1
+    return cnt
+
+def locate_zero(puzzle):
+    for i in range(len(puzzle)):
+        for j in range(len(puzzle[0])):
+            if puzzle[i][j] == 0:
+                return i, j
+
+def is_solvable(puzzle):
+    cnt = count_inversions(puzzle)
+    X = sum(locate_zero(puzzle)) % 2
+    return (cnt+X) % 2 == 0
+
+def get_target(m, n = None):
+    if not n:
+        n = m
     dest = np.arange(1, m*n+1).reshape(m, n)
     dest[-1][-1] = 0
     return dest.tolist()
 
-def shuffle(m, n):
-    shuffled = np.arange(m*n)
-    np.random.shuffle(shuffled)
-    return (np.reshape(shuffled, (m ,n))).tolist()
+def get_puzzle(m, n = None):
+    if not n:
+        n = m
+    puzzle = np.arange(m*n)
+    np.random.shuffle(puzzle)
+    puzzle = puzzle.reshape(m, n).tolist()
+    if not is_solvable(puzzle):
+        print(f"not is solvable, {puzzle}")
+        if puzzle[0][0] and puzzle[0][1]:
+            puzzle[0][0], puzzle[0][1] = puzzle[0][1], puzzle[0][0]
+        else:
+            puzzle[1][0], puzzle[1][1] = puzzle[1][1], puzzle[1][0]
+    return puzzle
 
 def heuristic(dest):
     m, n = len(dest), len(dest[0])
@@ -28,12 +58,6 @@ def heuristic(dest):
         return distance
     return manhattans
             
-def locate_zero(puzzle):
-    for i in range(len(puzzle)):
-        for j in range(len(puzzle[0])):
-            if puzzle[i][j] == 0:
-                return i, j
-
 def neighbors(status):
     puzzle = to_list(status)
     i, j = locate_zero(puzzle)
@@ -65,16 +89,19 @@ def astar(puzzle, dest):
     manhattans = heuristic(dest)
     start = to_tuple(puzzle)
     target = to_tuple(dest)
-    heap = [(0 + manhattans(puzzle), 0, start)] # (depth+manhattan, depth, status)
-    visited = {start:(None, None)}
+    heap = [(0 + manhattans(puzzle), 0, start, None, None)] # (depth+manhattan, depth, status)
+    visited = {} # {cur_status: (pre_status, slide_block)}
     while heap:
-        evaluate, depth, status = heapq.heappop(heap)
+        evaluate, depth, status, pre_status, slide_block = heapq.heappop(heap)
+        if status in visited:
+            continue
+        print(status)
+        visited[status] = (pre_status, slide_block)
         if status == target:
             break
         for nei, block in neighbors(status):
             if nei not in visited:
-                visited[nei] = (status, block)
-                heap.append((depth + 1 + manhattans(nei), depth+1, nei))
+                heap.append((depth + 1 + manhattans(nei), depth+1, nei, status, block))
     if target not in visited:
         print("invalid puzzle")
         return None

@@ -187,7 +187,7 @@ export default function Board() {
               }
               setSignalSwitch("answer");
             }} /> */}
-          <button type="button" className="btn btn-info me-2" onClick={() => setSignalSwitch("introduction")}>Game Introduction</button>
+          <button type="button" className="btn btn-info me-2" onClick={() => setSignalSwitch("introduction")}>Introduction</button>
           <button type="button" className="btn btn-secondary" onClick={() => setSignalSwitch("email")}>Feedback</button>
           <TextBox signalSwitch={signalSwitch}/>
           
